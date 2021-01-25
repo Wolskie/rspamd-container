@@ -1,5 +1,13 @@
 FROM alpine:latest
 
+LABEL maintainer="Mark Hahl <mark@hahl.id.au>" \
+      org.label-schema.name="Rspamd Docker Image" \
+      org.label-schema.description="Docker image for Rspamd, the fast, free and open-source spam filtering system." \
+      org.label-schema.url="https://github.com/wolskie/rspamd-container" \
+      org.label-schema.vcs-url="https://github.com/wolskie/rspamd-container" \
+      org.label-schema.schema-version="1.0"
+
+
 RUN apk update \
  && apk upgrade \
  && apk add --no-cache \
@@ -8,10 +16,10 @@ RUN apk update \
  
  # Install postfix
  && apk add --no-cache \
-    rspamd rspamd-controller rspamd-proxy ca-certificates supervisor rsyslog \
+    rspamd rspamd-controller rspamd-proxy ca-certificates \
  && (rm "/tmp/"* 2>/dev/null || true) && (rm -rf /var/cache/apk/* 2>/dev/null || true)
 
-COPY supervisord.conf /etc/supervisord.conf
-COPY rsyslog.conf /etc/rsyslog.conf
+USER 1001
 
-CMD ["supervisord", "-c", "/etc/supervisord.conf"]
+CMD ["/usr/sbin/rspamd", "-i", "-f" ]
+
