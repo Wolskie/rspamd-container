@@ -1,5 +1,7 @@
-FROM alpine:latest
+FROM centos:latest
+ENV container docker
 
+<<<<<<< HEAD
 LABEL maintainer="Mark Hahl <mark@hahl.id.au>" \
       org.label-schema.name="Rspamd Docker Image" \
       org.label-schema.description="Docker image for Rspamd, the fast, free and open-source spam filtering system." \
@@ -7,19 +9,20 @@ LABEL maintainer="Mark Hahl <mark@hahl.id.au>" \
       org.label-schema.vcs-url="https://github.com/wolskie/rspamd-container" \
       org.label-schema.schema-version="1.0"
 
+# Update system
+RUN dnf install -y epel-release -y && \
+    dnf upgrade -y && \
+    dnf clean all && \
+    rm -rf /var/cache/yum
 
-RUN apk update \
- && apk upgrade \
- && apk add --no-cache \
-        ca-certificates \
- && update-ca-certificates \
- 
- # Install postfix
- && apk add --no-cache \
-    rspamd rspamd-controller rspamd-proxy ca-certificates \
- && (rm "/tmp/"* 2>/dev/null || true) && (rm -rf /var/cache/apk/* 2>/dev/null || true)
+# Install tools
+RUN dnf install -y wget supervisor rsyslog
 
-USER 1001
+# Install rspamd repos
+RUN wget https://rspamd.com/rpm/centos-8/rspamd-experimental.repo -O /etc/yum.repos.d/rspamd.repo && \
+    rpm --import https://rspamd.com/rpm/gpg.key && \
+    dnf update -y && \
+    dnf install -y rspamd
 
-CMD ["/usr/sbin/rspamd", "-i", "-f" ]
 
+CMD ["supervisord", "-c", "/etc/supervisord.conf"]
