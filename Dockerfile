@@ -1,6 +1,13 @@
 FROM centos:latest
 ENV container docker
 
+LABEL maintainer="Mark Hahl <mark@hahl.id.au>" \
+      org.label-schema.name="rspamd Docker Image" \
+      org.label-schema.description="Docker image for rspamd." \
+      org.label-schema.url="https://github.com/wolskie/rspamd-container" \
+      org.label-schema.vcs-url="https://github.com/wolskie/rspamd-container" \
+      org.label-schema.schema-version="1.0"
+
 # Update system
 RUN dnf install -y epel-release -y && \
     dnf upgrade -y && \
