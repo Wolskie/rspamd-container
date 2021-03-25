@@ -1,7 +1,7 @@
 FROM centos:latest
+
 ENV container docker
 
-<<<<<<< HEAD
 LABEL maintainer="Mark Hahl <mark@hahl.id.au>" \
       org.label-schema.name="Rspamd Docker Image" \
       org.label-schema.description="Docker image for Rspamd, the fast, free and open-source spam filtering system." \
@@ -24,5 +24,7 @@ RUN wget https://rspamd.com/rpm/centos-8/rspamd-experimental.repo -O /etc/yum.re
     dnf update -y && \
     dnf install -y rspamd
 
+COPY supervisord.conf /etc/supervisord.conf
+COPY rsyslog.conf /etc/rsyslog.conf
 
 CMD ["supervisord", "-c", "/etc/supervisord.conf"]
