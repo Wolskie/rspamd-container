@@ -20,10 +20,10 @@ jobs:
 
   # Push image to GitHub Packages.
   # See also https://docs.docker.com/docker-hub/builds/
-  build:
+  push:
   
     runs-on: ubuntu-latest
-    if: github.event_name == 'build'
+    if: github.event_name == 'push'
 
     steps:
       - uses: actions/checkout@v2
