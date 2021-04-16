@@ -19,7 +19,7 @@ RUN dnf install -y epel-release -y && \
 RUN dnf install -y wget supervisor rsyslog
 
 # Install rspamd repos
-RUN wget https://rspamd.com/rpm/centos-8/rspamd-experimental.repo -O /etc/yum.repos.d/rspamd.repo && \
+RUN wget https://rspamd.com/rpm-stable/centos-8/rspamd.repo -O /etc/yum.repos.d/rspamd.repo && \
     rpm --import https://rspamd.com/rpm/gpg.key && \
     dnf update -y && \
     dnf install -y rspamd
